@@ -1,15 +1,19 @@
+# Librerías principales de la app
 streamlit
 openai
-langchain
-langchain-community
-langchain-openai
-langchain-text-splitters
-pypdf
-chromadb
-PyPDF2
-langchain
 pandas
 plotly
-shap
-lime
-sentence-transformers
+
+# Para trabajar con PDFs
+PyPDF2
+
+# Para RAG con LangChain
+langchain
+langchain-openai
+chromadb
+
+# (Opcional) Si usas scikit-learn o numpy en explicabilidad
+scikit-learn
+numpy
+
+
