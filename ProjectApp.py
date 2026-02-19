@@ -201,6 +201,19 @@ def page_chat():
             st.session_state.preferences["system_prompt"],
             height=120
         )
+        st.divider()
+        st.header("📄 RAG Document")
+
+        uploaded_file = st.file_uploader(
+            "Upload a PDF",
+            type=["pdf"]
+        )
+
+        if uploaded_file:
+            with st.spinner("Processing document..."):
+                st.session_state.vectordb = process_pdf(uploaded_file)
+
+            st.success("Document indexed successfully")
 
         if st.button("🗑️ Clear Chat"):
             st.session_state.messages = []
