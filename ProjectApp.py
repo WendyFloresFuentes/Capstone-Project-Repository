@@ -129,7 +129,7 @@ def generate_response(message: str, temperature: float):
         search_kwargs={"k": 4}
     )
 
-    docs = retriever.get_relevant_documents(message)
+    docs = retriever.invoke(message)
 
     if not docs:
         context = ""
