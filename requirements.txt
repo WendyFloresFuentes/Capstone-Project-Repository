@@ -6,6 +6,8 @@ langchain-openai
 langchain-text-splitters
 pypdf
 chromadb
+PyPDF2
+langchain
 pandas
 plotly
 shap
