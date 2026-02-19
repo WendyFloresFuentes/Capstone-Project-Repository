@@ -107,6 +107,8 @@ def initialize_session_state():
             "avg_response_time": 0.0,
             "total_feedback": 0
         }
+if "vectordb" not in st.session_state:
+    st.session_state.vectordb = None
 
 # =============================================================================
 # CORE LOGIC
