@@ -118,11 +118,38 @@ def generate_response(message: str, temperature: float):
     start = time.time()
     client = load_llm()
 
-    messages = [{"role": "system", "content": st.session_state.preferences["system_prompt"]}]
-    for msg in st.session_state.messages:
-        messages.append({"role": msg["role"], "content": msg["content"]})
+    if st.session_state.vectordb is None:
+        return (
+            "Please upload a PDF document first.",
+            None,
+            0.0
+        )
 
-    messages.append({"role": "user", "content": message})
+    retriever = st.session_state.vectordb.as_retriever(
+        search_kwargs={"k": 4}
+    )
+
+    docs = retriever.get_relevant_documents(message)
+
+    if not docs:
+        context = ""
+    else:
+        context = "\n\n".join(d.page_content for d in docs)
+
+    system_prompt = (
+        "You are a strict AI assistant.\n"
+        "Answer ONLY using the context provided.\n"
+        "If the answer is not in the context, say:\n"
+        "'I cannot find that information in the provided document.'"
+    )
+
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {
+            "role": "user",
+            "content": f"Context:\n{context}\n\nQuestion:\n{message}"
+        }
+    ]
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -135,13 +162,8 @@ def generate_response(message: str, temperature: float):
     explanation = compute_explanation(message, output)
     elapsed = time.time() - start
 
-    st.session_state.metrics["total_messages"] += 1
-    n = st.session_state.metrics["total_messages"]
-    st.session_state.metrics["avg_response_time"] = (
-        ((n - 1) * st.session_state.metrics["avg_response_time"] + elapsed) / n
-    )
-
     return output, explanation, elapsed
+
 #Codigo para que pida pdf
 @st.cache_resource
 def process_pdf(uploaded_file):
