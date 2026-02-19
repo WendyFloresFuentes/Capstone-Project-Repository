@@ -17,6 +17,32 @@ from typing import List, Dict
 from datetime import datetime
 from openai import OpenAI
 
+#
+import streamlit as st
+from openai import OpenAI
+
+@st.cache_resource
+def load_llm():
+    """
+    Load OpenAI client (cached).
+    Pide la API key al usuario en la interfaz.
+    """
+    if "OPENAI_API_KEY" not in st.session_state:
+        st.session_state["OPENAI_API_KEY"] = ""
+
+    # Campo en la barra lateral para introducir la API key
+    api_key = st.sidebar.text_input("Introduce tu OpenAI API Key", type="password")
+
+    if api_key:
+        st.session_state["OPENAI_API_KEY"] = api_key
+
+    if not st.session_state["OPENAI_API_KEY"]:
+        st.error("⚠️ No se ha configurado la API Key. Por favor introdúcela en la barra lateral.")
+        return None
+
+    return OpenAI(api_key=st.session_state["OPENAI_API_KEY"])
+
+
 # =============================================================================
 # PAGE CONFIGURATION
 # =============================================================================
