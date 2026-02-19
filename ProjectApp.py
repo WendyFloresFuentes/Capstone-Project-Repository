@@ -140,7 +140,30 @@ def generate_response(message: str, temperature: float):
     )
 
     return output, explanation, elapsed
+#Codigo para que pida pdf
+@st.cache_resource
+def process_pdf(uploaded_file):
+    reader = PdfReader(uploaded_file)
 
+    text = ""
+    for page in reader.pages:
+        page_text = page.extract_text()
+        if page_text:
+            text += page_text
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200
+    )
+
+    docs = splitter.create_documents([text])
+
+    embeddings = OpenAIEmbeddings()
+    vectordb = Chroma.from_documents(docs, embeddings)
+
+    return vectordb
+
+#
 
 def save_feedback(message, response, rating, comment):
     st.session_state.feedback_db.append({
