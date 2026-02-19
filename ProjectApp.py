@@ -58,13 +58,13 @@ st.set_page_config(
 # LLM CONFIGURATION
 # =============================================================================
 
-@st.cache_resource
-def load_llm():
-    """
-    Load OpenAI client (cached).
-    Requires OPENAI_API_KEY in environment variables.
-    """
-    return OpenAI()
+#@st.cache_resource
+#def load_llm():
+#   """
+#    Load OpenAI client (cached).
+#    Requires OPENAI_API_KEY in environment variables.
+#    """
+#    return OpenAI()
 
 # =============================================================================
 # CACHED DATA FUNCTIONS
