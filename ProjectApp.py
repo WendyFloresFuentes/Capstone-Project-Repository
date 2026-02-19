@@ -7,6 +7,14 @@ Original file is located at
     https://colab.research.google.com/drive/12GqGAjmeuNkk5aJSXJOuj3GNzYTNTOp1
 """
 
+#Cambio para implementar RAG
+from PyPDF2 import PdfReader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+
+#
+
 import streamlit as st
 import os
 import time
